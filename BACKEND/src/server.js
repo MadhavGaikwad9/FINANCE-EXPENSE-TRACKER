@@ -1,7 +1,21 @@
+const fs = require("fs");
+const path = require("path");
+
+const dotenvPath = path.resolve(__dirname, "../.env");
+if (fs.existsSync(dotenvPath)) {
+  require("dotenv").config({ path: dotenvPath });
+} else {
+  require("dotenv").config();
+}
+
+if (!process.env.JWT_SECRET) {
+  console.error("JWT_SECRET is not available. Checked backend .env path:", dotenvPath);
+  throw new Error("Missing JWT_SECRET in backend environment. Add JWT_SECRET=<your-secret> to BACKEND/.env and restart the server.");
+}
+
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
-require("dotenv").config();
 
 const connectDB = require("./config/db");
 
@@ -15,6 +29,10 @@ const app = express();
 
 // Create HTTP server
 const server = http.createServer(app);
+
+
+
+
 
 // Initialize Socket.io
 initializeSocket(server);

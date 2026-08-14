@@ -1,20 +1,46 @@
 import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 
 function Navbar({ user, onLogout }) {
   const { dark, setDark } = useContext(ThemeContext);
+  const navItems = [
+    { to: "/dashboard", label: "Overview" },
+    { to: "/transactions", label: "Transactions" },
+    { to: "/analytics", label: "Analytics" },
+    { to: "/budget", label: "Budget" },
+    { to: "/profile", label: "Profile" },
+    { to: "/settings", label: "Settings" }
+  ];
 
   return (
     <nav className="glass-panel" style={styles.navbar}>
-      <div style={styles.brand}>
-        <div style={styles.logo}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="var(--primary)" />
-            <path d="M2 17L12 22L22 17" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M2 12L12 17L22 12" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+      <div style={styles.brandSection}>
+        <div style={styles.brand}>
+          <div style={styles.logo}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="var(--primary)" />
+              <path d="M2 17L12 22L22 17" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M2 12L12 17L22 12" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <span style={styles.brandName}>FINANCE FLOW</span>
         </div>
-        <span style={styles.brandName}>FINANCE FLOW</span>
+
+        <div style={styles.menu}>
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              style={({ isActive }) => ({
+                ...styles.navLink,
+                ...(isActive ? styles.navLinkActive : {})
+              })}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
       </div>
 
       <div style={styles.actions}>
@@ -70,10 +96,33 @@ const styles = {
     letterSpacing: "0.03em",
     color: "var(--text-main)",
   },
+  brandSection: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "16px",
+  },
   actions: {
     display: "flex",
     alignItems: "center",
     gap: "18px",
+  },
+  menu: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "12px",
+    marginTop: "10px",
+  },
+  navLink: {
+    color: "var(--text-main)",
+    textDecoration: "none",
+    fontWeight: 500,
+    padding: "7px 12px",
+    borderRadius: "10px",
+    transition: "background 0.2s ease",
+  },
+  navLinkActive: {
+    background: "rgba(13, 110, 253, 0.12)",
+    color: "var(--primary)",
   },
   themeBtn: {
     background: "var(--input-bg)",

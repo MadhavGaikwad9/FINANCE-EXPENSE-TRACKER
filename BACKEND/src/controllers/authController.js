@@ -29,7 +29,12 @@ exports.register = async (req, res) => {
         });
 
         // Generate Token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            throw new Error("JWT secret is not configured. Please set JWT_SECRET in backend .env");
+        }
+
+        const token = jwt.sign({ id: user._id }, jwtSecret, {
             expiresIn: "7d"
         });
 
@@ -72,7 +77,12 @@ exports.login = async (req, res) => {
         }
 
         // Generate Token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            throw new Error("JWT secret is not configured. Please set JWT_SECRET in backend .env");
+        }
+
+        const token = jwt.sign({ id: user._id }, jwtSecret, {
             expiresIn: "7d"
         });
 
